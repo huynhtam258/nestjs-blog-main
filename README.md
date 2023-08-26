@@ -42,6 +42,10 @@ $ npm run migration:generate db/migrations/migration_name
 # migragion_name: add_columnName_to_tableName_table
 $ npm run migration:generate db/migrations/migration_name
 
+# set field column into table
+# migragion_name: set_feature_columnName_to_tableName_table
+$ npm run migration:generate db/migrations/migration_name
+
 # run migration and up database
 $ npm run migration:run
 
