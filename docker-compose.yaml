@@ -1,0 +1,15 @@
+version: '3.1'
+
+services:
+
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 33061:3306
+    volumes:
+      - ./../mysql-server:/lib/mysql
+# username: root
+# password: root
