@@ -54,7 +54,7 @@ export class UserController {
     }
 
     @UseGuards(AuthGuard)
-    @Put()
+    @Put(':id')
     update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
         return this.userService.update(Number(id), updateUserDto)
     }
@@ -65,8 +65,8 @@ export class UserController {
         return this.userService.delete(Number(id))
     }
 
-    @Post('upload-avatar')
     @UseGuards(AuthGuard)
+    @Post('upload-avatar')
     @UseInterceptors(FileInterceptor('avatar', {
         storage: storageConfig('avatar'),
         fileFilter: (req, file, cb) => {
@@ -92,10 +92,6 @@ export class UserController {
         }
     }))
     uploadAvatar(@Req() req: any, @UploadedFile() file: Express.Multer.File) {
-        console.log("upload avatar");
-        console.log('user data', req.user_data)
-        console.log(file);
-
         if (req.fileValidationError) {
             throw new BadRequestException(req.fileValidationError);
         }
