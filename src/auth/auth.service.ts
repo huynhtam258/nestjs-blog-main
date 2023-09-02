@@ -9,7 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { ResponseRefreshToken } from './interfaces/refresh-token.interface';
 import { ResponseLogin } from './interfaces/login.interface';
-
+import { randomBytes } from 'crypto'
 @Injectable()
 export class AuthService {
     constructor(
@@ -21,6 +21,7 @@ export class AuthService {
         const hashPassword = await this.hashPassword(registerUserDto.password)
         return await this.userRepository.save({
             ...registerUserDto,
+            key: randomBytes(10).toString('hex'),
             password: hashPassword
         })
     }
@@ -36,52 +37,60 @@ export class AuthService {
         const user = await this.userRepository.findOne({
             where: { email: loginUserDto.email }
         });
-
+        
         if (!user) {
             throw new HttpException('Email is not exist', HttpStatus.UNAUTHORIZED)
         }
 
         const checkPass = bcrypt.compareSync(loginUserDto.password, user.password)
 
-        if(!checkPass) {
+        if (!checkPass) {
             throw new HttpException('Password is not correct', HttpStatus.UNAUTHORIZED)
         }
-
+        
         // generate token and refresh token
-        const payload = { id: user.id, email: user.email }
+        const payload = { id: user.id, email: user.email, key: user.key }
         const token = await this.generateToken(payload);
         return token
     }
 
     public async refreshToken(refresh_token: string): Promise<ResponseRefreshToken> {
         try {
-            const verify = await this.jwtService.verifyAsync(refresh_token, {
-                secret: this.configService.get<string>('SECRET')
+            const user = await this.userRepository.findOne({
+                where: {
+                    refresh_token: refresh_token
+                }
             })
-            
-            if(!verify) {
+            if (!user) {
+                throw new HttpException('Refresh token is not valid', HttpStatus.UNAUTHORIZED)
+            }
+            const verify = await this.jwtService.verifyAsync(refresh_token, {
+                secret: user.key
+            })
+
+            if (!verify) {
                 throw new HttpException('Refresh token is not valid', HttpStatus.BAD_REQUEST)
             }
 
-            const checkExistToken = await this.userRepository.findOneBy({ email: verify.email, refresh_token})
+            const checkExistToken = await this.userRepository.findOneBy({ email: verify.email, refresh_token })
             if (!checkExistToken) {
-                throw new HttpException('Refresh token is not valid', HttpStatus.BAD_REQUEST) 
+                throw new HttpException('Refresh token is not valid', HttpStatus.BAD_REQUEST)
             }
-            return this.generateToken({ id: verify.id, email: verify.email})
+            return this.generateToken({ id: verify.id, email: verify.email, key: user.key })
 
         } catch (error) {
-            
+
             throw new HttpException('Refresh token is not valid', HttpStatus.BAD_REQUEST)
-        } 
+        }
     }
 
-    private async generateToken(payload: {id: number, email: string}) {
+    private async generateToken(payload: { id: number, email: string, key: string }) {
         const access_token = await this.jwtService.signAsync(payload, {
-            secret: this.configService.get<string>('SECRET'),
+            secret: payload.key,
             expiresIn: this.configService.get<string>('EXP_IN_ACCESS_TOKEN')
         })
         const refresh_token = await this.jwtService.signAsync(payload, {
-            secret: this.configService.get<string>('SECRET'),
+            secret: payload.key,
             expiresIn: this.configService.get<string>('EXP_IN_REFRESH_TOKEN')
         })
 
