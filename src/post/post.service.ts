@@ -6,6 +6,7 @@ import { Post } from './entities/post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { FilterPostDto } from './dto/filter-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { Pagination } from 'src/core/interfaces/pagination.interface';
 
 @Injectable()
 export class PostService {
@@ -25,7 +26,7 @@ export class PostService {
         }
     }
 
-    public async findAll (@Query() query: FilterPostDto): Promise<any> {
+    public async findAll (@Query() query: FilterPostDto): Promise<Pagination<Post[]>> {
         const items_per_page = Number(query.items_per_page) || 10;
         const page = Number(query.page) || 1;
         const search = query.search || '';

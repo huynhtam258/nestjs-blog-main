@@ -6,6 +6,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt'
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FilterUserDto } from './dto/filter-user.dto';
+import { Pagination } from 'src/core/interfaces/pagination.interface';
 
 @Injectable()
 export class UserService {
@@ -13,7 +14,7 @@ export class UserService {
 
     }
 
-    async findAll(query: FilterUserDto): Promise<any> {
+    async findAll(query: FilterUserDto): Promise<Pagination<User[]>> {
         const items_per_page = Number(query.items_per_page) || 10;
         const page = Number(query.page) || 1;
         const skip = (page - 1) * items_per_page;

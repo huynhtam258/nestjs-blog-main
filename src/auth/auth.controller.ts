@@ -5,6 +5,8 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { AuthService } from './auth.service';
 import { User } from 'src/user/entities/user.entity';
 import { RefreshTokenUserDto } from './dto/refreshToken-user';
+import { ResponseLogin } from './interfaces/login.interface';
+import { ResponseRefreshToken } from './interfaces/refresh-token.interface';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -22,12 +24,12 @@ export class AuthController {
     @ApiResponse({ status: 201, description: 'Login successfully!' })
     @ApiResponse({ status: 401, description: 'Login fail!' })
     @UsePipes(ValidationPipe)
-    login(@Body() loginUserDto: LoginUserDto): Promise<any> {
+    login(@Body() loginUserDto: LoginUserDto): Promise<ResponseLogin> {
         return this.authService.login(loginUserDto)
     }
 
     @Post('refresh-token')
-    refreshToken(@Body() refreshtTokenUserDto: RefreshTokenUserDto): Promise<any> {
+    refreshToken(@Body() refreshtTokenUserDto: RefreshTokenUserDto): Promise<ResponseRefreshToken> {
         return this.authService.refreshToken(refreshtTokenUserDto.refresh_token)
     }
 }

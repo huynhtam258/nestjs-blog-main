@@ -7,6 +7,8 @@ import * as bcrypt from 'bcrypt'
 import { LoginUserDto } from './dto/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { ResponseRefreshToken } from './interfaces/refresh-token.interface';
+import { ResponseLogin } from './interfaces/login.interface';
 
 @Injectable()
 export class AuthService {
@@ -30,7 +32,7 @@ export class AuthService {
         return hash;
     }
 
-    public async login(loginUserDto: LoginUserDto): Promise<any> {
+    public async login(loginUserDto: LoginUserDto): Promise<ResponseLogin> {
         const user = await this.userRepository.findOne({
             where: { email: loginUserDto.email }
         });
@@ -51,7 +53,7 @@ export class AuthService {
         return token
     }
 
-    public async refreshToken(refresh_token: string): Promise<any> {
+    public async refreshToken(refresh_token: string): Promise<ResponseRefreshToken> {
         try {
             const verify = await this.jwtService.verifyAsync(refresh_token, {
                 secret: this.configService.get<string>('SECRET')
