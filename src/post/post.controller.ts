@@ -22,6 +22,7 @@ import { extname } from 'path';
 import { PostService } from './post.service';
 import { FilterPostDto } from './dto/filter-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { fileFilter } from './../../utils/file'
 
 @Controller('post')
 export class PostController {
@@ -60,15 +61,13 @@ export class PostController {
         return this.postService.create(req['user_data'].id, { ...createPostDto, thumbnail: file.destination + '/' + file.filename });
     }
 
-    @UseGuards(AuthGuard)
     @Get()
     findAll(@Query() query: FilterPostDto): Promise<any> {
         return this.postService.findAll(query)
     }
 
-    @UseGuards(AuthGuard)
     @Get(':id')
-    finDetail(@Param('id') id: string) {
+    findDetail(@Param('id') id: string) {
         return this.postService.findDetail(Number(id))
     }
     
@@ -76,22 +75,7 @@ export class PostController {
     @Put(':id')
     @UseInterceptors(FileInterceptor('thumbnail', {
         storage: storageConfig('post'),
-        fileFilter: (req, file, cb) => {
-            const ext = extname(file.originalname);
-            const allowedExtArr = ['.jpg', '.png', '.jpeg'];
-            if (!allowedExtArr.includes(ext)) {
-                req.fileValidationError = `Wrong extension type. Accepted file ext are: ${allowedExtArr.toString()}`;
-                cb(null, false);
-            } else {
-                const fileSize = parseInt(req.headers['content-length']);
-                if (fileSize > 1024 * 1024 * 5) {
-                    req.fileValidationError = 'File size is too large. Accepted file size is less than 5 MB';
-                    cb(null, false);
-                } else {
-                    cb(null, true);
-                }
-            }
-        }
+        fileFilter: fileFilter
     }))
     update(@Param('id') id: string, @Req() req: any, @Body() updatePostDto: UpdatePostDto, @UploadedFile() file: Express.Multer.File) {
         if (req.fileValidationError) {
