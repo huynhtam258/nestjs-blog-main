@@ -6,6 +6,4 @@ export class CreateCategoryDto {
     description: string
 
     status: string
-
-    posts: Post[]
 }

@@ -15,8 +15,7 @@ export class CategoryService {
     }
 
     async create(createCategoryDto: CreateCategoryDto): Promise<Category>{
-        try {
-            
+        try {   
             const category = await this.categoryRepository.save({})
             return category
         } catch (error) {
