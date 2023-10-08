@@ -51,7 +51,10 @@ export class AuthService {
         // generate token and refresh token
         const payload = { id: user.id, email: user.email, key: user.key }
         const token = await this.generateToken(payload);
-        return token
+        return {
+            ...token,
+            client_key: user.key
+        }
     }
 
     public async refreshToken(refresh_token: string): Promise<ResponseRefreshToken> {
