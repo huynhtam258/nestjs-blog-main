@@ -12,7 +12,8 @@ import {
     UseGuards, 
     UsePipes, 
     ValidationPipe, 
-    BadRequestException
+    BadRequestException,
+    Delete
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { FileInterceptor } from '@nestjs/platform-express'
@@ -33,19 +34,21 @@ export class PostController {
     @UseGuards(AuthGuard)
     @UsePipes(ValidationPipe)
     @Post()
-    @UseInterceptors(FileInterceptor('thumbnail', {
-        storage: storageConfig('post'),
-        fileFilter: fileFilter
-    }))
-    create(@Req() req: CommonRequest, @Body() createPostDto: CreatePostDto, @UploadedFile() file: Express.Multer.File) {
-        if (req.fileValidationError) {
-            throw new BadRequestException(req.fileValidationError);
-        }
-        if (!file) {
-            throw new BadRequestException('File is required')
-        }
+    // @UseInterceptors(FileInterceptor('thumbnail', {
+    //     storage: storageConfig('post'),
+    //     fileFilter: fileFilter
+    // }))
+    create(@Req() req: CommonRequest, @Body() createPostDto: CreatePostDto) {
+        // console.log(file);
+        
+        // if (req.fileValidationError) {
+        //     throw new BadRequestException(req.fileValidationError);
+        // }
+        // if (!file) {
+        //     throw new BadRequestException('File is required')
+        // }
 
-        return this.postService.create(req['user_data'].id, { ...createPostDto, thumbnail: file.destination + '/' + file.filename });
+        return this.postService.create(+createPostDto.user, { ...createPostDto, thumbnail: '' });
     }
 
     @Get()
@@ -74,5 +77,12 @@ export class PostController {
         }
 
         return this.postService.update(Number(id), updatePostDto)
+    }
+    @UseGuards(AuthGuard)
+    @Delete(':id')
+    delete(@Param('id') id: string) {
+        console.log(id);
+        
+        return this.postService.delete(Number(id))
     }
 }
