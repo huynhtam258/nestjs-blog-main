@@ -48,7 +48,7 @@ export class PostController {
         //     throw new BadRequestException('File is required')
         // }
 
-        return this.postService.create(+createPostDto.user, { ...createPostDto, thumbnail: '' });
+        return this.postService.create(+createPostDto.user, createPostDto);
     }
 
     @Get()

@@ -6,4 +6,6 @@ export class UpdatePostDto {
     thumbnail: string;
 
     status: number;
+
+    content: string;
 }

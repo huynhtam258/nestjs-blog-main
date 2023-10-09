@@ -19,6 +19,9 @@ export class Post {
     @Column({ type: 'int', default: 1 })
     status: number
 
+    @Column({ type: 'longtext'})
+    content: string
+    
     @CreateDateColumn()
     created_at: Date
 

@@ -10,4 +10,6 @@ export class CreatePostDto {
     status: number
 
     user: User
+
+    post: string
 }
