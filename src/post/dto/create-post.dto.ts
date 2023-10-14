@@ -12,4 +12,8 @@ export class CreatePostDto {
     user: User
 
     content: string
+
+    publish: boolean
+
+    publish_date: string
 }

@@ -8,4 +8,8 @@ export class UpdatePostDto {
     status: number;
 
     content: string;
+
+    publish: boolean;
+
+    publish_date: string;
 }

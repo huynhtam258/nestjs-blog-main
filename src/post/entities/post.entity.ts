@@ -21,6 +21,12 @@ export class Post {
 
     @Column({ type: 'longtext'})
     content: string
+
+    @Column()
+    publish: boolean
+
+    @CreateDateColumn()
+    publish_date: Date
     
     @CreateDateColumn()
     created_at: Date
