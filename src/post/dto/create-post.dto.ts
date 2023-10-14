@@ -11,5 +11,5 @@ export class CreatePostDto {
 
     user: User
 
-    post: string
+    content: string
 }
