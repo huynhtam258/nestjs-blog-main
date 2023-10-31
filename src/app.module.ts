@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { PostModule } from './post/post.module';
 import { CategoryModule } from './category/category.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot(dataSourceOptions),
@@ -16,6 +17,7 @@ import { CategoryModule } from './category/category.module';
     PostModule,
     CategoryModule,
     ConfigModule.forRoot(),
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
