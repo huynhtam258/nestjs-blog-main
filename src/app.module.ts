@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PostModule } from './post/post.module';
 import { CategoryModule } from './category/category.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot(dataSourceOptions),
@@ -16,8 +17,9 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     AuthModule,
     PostModule,
     CategoryModule,
-    ConfigModule.forRoot(),
     CloudinaryModule,
+    ProductModule,
+    ConfigModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],

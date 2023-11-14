@@ -81,8 +81,6 @@ export class PostController {
     @UseGuards(AuthGuard)
     @Delete(':id')
     delete(@Param('id') id: string) {
-        console.log(id);
-        
         return this.postService.delete(Number(id))
     }
 }
