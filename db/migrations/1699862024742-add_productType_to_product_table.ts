@@ -4,11 +4,11 @@ export class AddProductTypeToProductTable1699862024742 implements MigrationInter
     name = 'AddProductTypeToProductTable1699862024742'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`ALTER TABLE \`product\` CHANGE \`format\` \`product_type\` enum ('Electronics', 'Clothing', 'Furniture') NOT NULL`);
+        await queryRunner.query(`ALTER TABLE \`product\` ADD \`product_type\` enum ('Electronics', 'Clothing', 'Furniture') NOT NULL`);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`ALTER TABLE \`product\` CHANGE \`product_type\` \`format\` enum ('Electronics', 'Clothing', 'Furniture') NOT NULL`);
+        await queryRunner.query(`ALTER TABLE \`product\` DROP COLUMN \`product_type\``);
     }
 
 }

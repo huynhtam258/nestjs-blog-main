@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
 type ProductType = "Electronics" | "Clothing" | "Furniture"
 @Entity()
@@ -20,10 +20,21 @@ export class Product {
 
   @Column()
   product_price: number;
+
+  @Column()
+  product_quantity: number;
   
   @Column({
     type: 'enum',
     enum: ["Electronics", "Clothing", "Furniture"],
   })
   product_type: ProductType;
+
+  @Column({ type: 'boolean', default: false })
+  @Index()
+  isDraft: boolean;
+
+  @Column({ type: 'boolean', default: false })
+  @Index()
+  isPublish: boolean;
 }
