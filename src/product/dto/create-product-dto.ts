@@ -11,5 +11,7 @@ export class CreateProductDto {
     
     product_description: string;
 
+    product_quantity: number;
+
     product_type: ProductType;
 }
