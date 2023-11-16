@@ -6,6 +6,7 @@ import { CreateProductDto } from './dto/create-product-dto';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { FilterProductDto } from './dto/filter-product.dto';
 import { Pagination } from 'src/core/interfaces/pagination.interface';
+import { PublishProduct } from './dto/publish-product.dto';
 
 @Injectable()
 export class ProductService {
@@ -74,10 +75,41 @@ export class ProductService {
     }
 
     public async findDetail(productId: number) {
-        return await this.productRepository.findOne({
-            where: {
-                id: productId
+        try {
+            const product = await this.productRepository.findOne({
+                where: {
+                    id: productId
+                }
+            })
+            if (!product) {
+                throw new HttpException("Can't find product", HttpStatus.BAD_REQUEST)
             }
-        })
+            return product
+        } catch (error) {
+            throw new HttpException("Can't find product", HttpStatus.BAD_REQUEST)
+        }
+    }
+
+    public async publishProduct(publishProduct: PublishProduct) {
+        try {
+            const product = await this.productRepository.findOne({
+                where: {
+                    id: publishProduct.productId
+                }
+            })
+            
+            if (!product) {
+                throw new HttpException("Can't find product", HttpStatus.BAD_REQUEST)
+            }
+
+            return await this.productRepository.update(publishProduct.productId, {
+                ...product,
+                isDraft: !publishProduct.isPublish,
+                isPublish: publishProduct.isPublish
+            })
+
+        } catch (error) {
+            throw new HttpException("Can't update product", HttpStatus.BAD_REQUEST)
+        }
     }
 }

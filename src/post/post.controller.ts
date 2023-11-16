@@ -33,21 +33,8 @@ export class PostController {
 
     @UseGuards(AuthGuard)
     @UsePipes(ValidationPipe)
-    @Post()
-    // @UseInterceptors(FileInterceptor('thumbnail', {
-    //     storage: storageConfig('post'),
-    //     fileFilter: fileFilter
-    // }))
-    create(@Req() req: CommonRequest, @Body() createPostDto: CreatePostDto) {
-        // console.log(file);
-        
-        // if (req.fileValidationError) {
-        //     throw new BadRequestException(req.fileValidationError);
-        // }
-        // if (!file) {
-        //     throw new BadRequestException('File is required')
-        // }
-
+    @Post() 
+    create(@Body() createPostDto: CreatePostDto) {
         return this.postService.create(+createPostDto.user, createPostDto);
     }
 

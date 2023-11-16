@@ -35,5 +35,24 @@ export class ProductController {
     findAll(@Query() query: FilterProductDto): Promise<Pagination<ProductEntity[]>> {
         return this.productService.findAll(query)
     }
+    
+    @UseGuards(AuthGuard)
+    @UsePipes(ValidationPipe)
+    @Put('/publish/:id')
+    publishProduct(@Param('id') id: string) {
+        return this.productService.publishProduct({
+            productId: Number(id), 
+            isPublish: true
+        })
+    }
 
+    @UseGuards(AuthGuard)
+    @UsePipes(ValidationPipe)
+    @Put('/unpublish/:id')
+    unPublishProduct(@Param('id') id: string) {
+        return this.productService.publishProduct({
+            productId: Number(id),
+            isPublish: false
+        })
+    }
 }
