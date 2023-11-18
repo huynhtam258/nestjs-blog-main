@@ -54,7 +54,12 @@ export class PostController {
         storage: storageConfig('post'),
         fileFilter: fileFilter
     }))
-    update(@Param('id') id: string, @Req() req: CommonRequest, @Body() updatePostDto: UpdatePostDto, @UploadedFile() file: Express.Multer.File) {
+    update(
+        @Param('id') id: string, 
+        @Req() req: CommonRequest, 
+        @Body() updatePostDto: UpdatePostDto, 
+        @UploadedFile() file: Express.Multer.File
+    ) {
         if (req.fileValidationError) {
             throw new BadRequestException(req.fileValidationError)
         }

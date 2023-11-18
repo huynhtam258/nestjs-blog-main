@@ -10,6 +10,8 @@ import { PostModule } from './post/post.module';
 import { CategoryModule } from './category/category.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { ProductModule } from './product/product.module';
+import { CartController } from './cart/cart.controller';
+import { CartModule } from './cart/cart.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot(dataSourceOptions),
@@ -20,8 +22,9 @@ import { ProductModule } from './product/product.module';
     CloudinaryModule,
     ProductModule,
     ConfigModule.forRoot(),
+    CartModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, CartController],
   providers: [AppService],
 })
 export class AppModule { }

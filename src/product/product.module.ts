@@ -6,7 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { Product } from './entities/product.entity';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
-
+import { ProductReponsitory } from './repositories/product.repository';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Product]),
@@ -14,6 +14,6 @@ import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
     ConfigModule
   ],
   controllers: [ProductController],
-  providers: [ProductService, CloudinaryService]
+  providers: [ProductService, CloudinaryService, ProductReponsitory]
 })
 export class ProductModule {}
