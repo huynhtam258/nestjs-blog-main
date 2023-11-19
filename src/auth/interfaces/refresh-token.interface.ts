@@ -1,3 +1,3 @@
 export interface ResponseRefreshToken {
-    refresh_token: string
+  refresh_token: string
 }
