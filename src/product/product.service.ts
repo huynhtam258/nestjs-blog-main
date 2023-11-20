@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Inject, Injectable, Query } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+// import { InjectRepository } from '@nestjs/typeorm';
+// import { Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
 import { CreateProductDto } from './dto/create-product-dto';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
@@ -9,11 +9,16 @@ import { Pagination } from 'src/core/interfaces/pagination.interface';
 import { PublishProduct } from './dto/publish-product.dto';
 import { ProductReponsitory } from './repositories/product.repository';
 
+import { CACHE_MANAGER } from '@nestjs/cache-manager'
+import { Cache } from 'cache-manager'
+import { PRODUCTS } from 'src/core/constant';
+
 @Injectable()
 export class ProductService {
   constructor(
     private _productRepository: ProductReponsitory,
-    private cloudinaryService: CloudinaryService
+    private cloudinaryService: CloudinaryService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) { }
 
   public async findAll(@Query() query: FilterProductDto): Promise<Pagination<Product[]>> {
@@ -30,6 +35,9 @@ export class ProductService {
     const lastPage = Math.ceil(total / items_per_page);
     const nextPage = page + 1 > lastPage ? null : page + 1
     const prevPage = page - 1 < 1 ? null : page - 1;
+
+    // caching data
+    await this.cacheManager.set(PRODUCTS, res);
 
     return {
       data: res,

@@ -10,9 +10,9 @@ import { PostModule } from './post/post.module';
 import { CategoryModule } from './category/category.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { ProductModule } from './product/product.module';
-import { CartController } from './cart/cart.controller';
 import { CartModule } from './cart/cart.module';
 
+import { CacheModule } from '@nestjs/cache-manager'
 @Module({
   imports: [TypeOrmModule.forRoot(dataSourceOptions),
     UserModule,
@@ -23,8 +23,11 @@ import { CartModule } from './cart/cart.module';
     ProductModule,
     ConfigModule.forRoot(),
     CartModule,
+    CacheModule.register({
+      ttl: 0 // mili seconds
+    })
   ],
-  controllers: [AppController, CartController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule { }

@@ -7,11 +7,13 @@ import { ConfigModule } from '@nestjs/config';
 import { Product } from './entities/product.entity';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { ProductReponsitory } from './repositories/product.repository';
+import { CacheModule } from '@nestjs/cache-manager'
 @Module({
   imports: [
     TypeOrmModule.forFeature([Product]),
     JwtModule,
-    ConfigModule
+    ConfigModule,
+    CacheModule.register()
   ],
   controllers: [ProductController],
   providers: [ProductService, CloudinaryService, ProductReponsitory]
