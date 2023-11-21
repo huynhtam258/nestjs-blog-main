@@ -16,22 +16,6 @@ import { AddToCartDto } from './dto/add-to-cart.dto';
 export class CartController {
   constructor(private cartService: CartService) { }
 
-  // @Post(':id')
-  // @UsePipes(ValidationPipe)
-  // setCart(@Param('id') id: string, @Body() data: any) {
-  //   return this.cartService.setCart(Number(id), data.products)
-  // }
-
-  // @Get(':id')
-  // async getCart(@Param('id') id: string) {
-  //   return this.cartService.getCart(Number(id))
-  // }
-
-  // @Delete(':id')
-  // async payment(@Param('id') id: string) {
-  //   return this.cartService.payment(Number(id))
-  // }
-
   @Post('/add-to-cart')
   async addToCart(@Body() addToCartDto: AddToCartDto) {
     const { cartId, productId, quantity } = addToCartDto;
@@ -40,7 +24,6 @@ export class CartController {
 
   @Post(':id')
   create(@Param('id') id: string) {
-    console.log(id);
-    return this.cartService.createCart();
+    return this.cartService.createCart(Number(id));
   }
 }
