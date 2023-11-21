@@ -4,9 +4,51 @@ import { Cache } from 'cache-manager'
 import { IProductInsert } from './dto/product-insert.dto';
 import { ICart } from './interfaces/cart.interface';
 import { PRODUCTS } from 'src/core/constant';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Cart } from './entities/cart.entity';
+import { Repository } from 'typeorm';
+import { CartItem } from './entities/cart-item.entity';
+import { Product } from 'src/product/entities/product.entity';
 @Injectable()
 export class CartService {
-  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) { }
+  constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    @InjectRepository(Cart)
+    private cartRepository: Repository<Cart>,
+    @InjectRepository(CartItem)
+    private cartItemRepository: Repository<CartItem>,
+    @InjectRepository(Product)
+    private productRepository: Repository<Product>,
+  ) { }
+
+  async createCart(): Promise<Cart> {
+    const cart = this.cartRepository.create();
+    return this.cartRepository.save(cart);
+  }
+  
+  async addToCart(cartId: number, productId: number, quantity: number): Promise<Cart> {
+    const cart = await this.cartRepository.findOne({
+      where: {
+        id: cartId
+      },
+      relations: ['items', 'items.product']
+    });
+    const product = await this.productRepository.findOne({
+      where: {
+        id: productId
+      }
+    });
+    
+    let cartItem = cart.items.find(item => item.product.id === productId);
+    if (cartItem) {
+      cartItem.quantity += quantity;
+    } else {
+      cartItem = await this.cartItemRepository.save({ product, quantity });
+      cart.items.push(cartItem);
+    }
+  
+    return this.cartRepository.save(cart);
+  }
 
   async setCart(userId: number, products: IProductInsert[]) {
     // get product caching
