@@ -13,7 +13,6 @@ import { User } from 'src/user/entities/user.entity';
 @Injectable()
 export class CartService {
   constructor(
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @InjectRepository(Cart)
     private cartRepository: Repository<Cart>,
     @InjectRepository(CartItem)
@@ -21,8 +20,7 @@ export class CartService {
     @InjectRepository(Product)
     private productRepository: Repository<Product>,
     @InjectRepository(User)
-    private userRepository: Repository<User>,
-    
+    private userRepository: Repository<User>
   ) { }
 
   async createCart(userId: number): Promise<Cart> {
@@ -35,7 +33,7 @@ export class CartService {
     return cart
   }
 
-  async addToCart(cartId: number, productId: number, quantity: number): Promise<Cart> {
+  async addToCart(userId: number, cartId: number, productId: number, quantity: number): Promise<Cart> {
     const cart = await this.cartRepository.findOne({
       where: {
         id: cartId

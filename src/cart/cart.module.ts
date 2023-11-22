@@ -7,10 +7,14 @@ import { Cart } from './entities/cart.entity';
 import { CartItem } from './entities/cart-item.entity';
 import { Product } from 'src/product/entities/product.entity';
 import { User } from 'src/user/entities/user.entity';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Cart, CartItem, Product, User]),
+    JwtModule,
+    ConfigModule,
     CacheModule.register()
   ],
   controllers: [CartController],

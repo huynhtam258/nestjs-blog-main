@@ -21,8 +21,8 @@ import { CacheModule } from '@nestjs/cache-manager'
     CategoryModule,
     CloudinaryModule,
     ProductModule,
-    ConfigModule.forRoot(),
     CartModule,
+    ConfigModule.forRoot(),
     CacheModule.register({
       ttl: 0 // mili seconds
     })
