@@ -1,6 +1,8 @@
 import {
   Body,
   Controller,
+  Get,
+  Param,
   Post,
   Req,
   UseGuards,
@@ -16,7 +18,7 @@ export class CartController {
 
   @UseGuards(AuthGuard)
   @Post('/add-to-cart')
-  async addToCart(@Req() req: CommonRequest, @Body() addToCartDto: AddToCartDto) {
+  addToCart(@Req() req: CommonRequest, @Body() addToCartDto: AddToCartDto) {
     const { cartId, productId, quantity } = addToCartDto;
     return this.cartService.addToCart(Number(req.user_data.id), cartId, productId, quantity);
   }
@@ -25,5 +27,11 @@ export class CartController {
   @Post('')
   create(@Req() req: CommonRequest) {
     return this.cartService.createCart(Number(req.user_data.id));
+  }
+
+  @UseGuards(AuthGuard)
+  @Get(':id')
+  getCart(@Req() req: CommonRequest, @Param('id') id: string) {
+    return this.cartService.getCart(Number(req.user_data.id), Number(id))
   }
 }

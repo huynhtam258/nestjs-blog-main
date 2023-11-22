@@ -40,6 +40,9 @@ export class CartService {
       },
       relations: ['items', 'items.product']
     });
+    // if (cart.user.id !== userId) {
+    //   throw new HttpException("Can't find cart", HttpStatus.BAD_REQUEST)
+    // }
     const product = await this.productRepository.findOne({
       where: {
         id: productId
@@ -55,5 +58,18 @@ export class CartService {
     }
   
     return this.cartRepository.save(cart);
+  }
+
+  async getCart(userId: number, cartId: number) {
+    const cart = await this.cartRepository.findOne({
+      where: {
+        id: cartId,
+        user: {
+          id: userId
+        }
+      },
+      relations: ['items', 'items.product']
+    })
+    return cart
   }
 }
