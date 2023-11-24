@@ -1,9 +1,4 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { CACHE_MANAGER } from '@nestjs/cache-manager'
-import { Cache } from 'cache-manager'
-import { IProductInsert } from './dto/product-insert.dto';
-import { ICart } from './interfaces/cart.interface';
-import { PRODUCTS } from 'src/core/constant';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cart } from './entities/cart.entity';
 import { Repository } from 'typeorm';

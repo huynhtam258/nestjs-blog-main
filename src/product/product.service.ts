@@ -69,7 +69,7 @@ export class ProductService {
       const cloudinaryResult = await this.cloudinaryService.uploadFile(file)
       const thumbnail = cloudinaryResult.url
 
-      return await this._productRepository.update(productId, { ...product, product_thumb: thumbnail })
+      return await this._productRepository.updateProduct(productId, { ...product, product_thumb: thumbnail })
     } catch (error) {
       throw new HttpException("Can't update image product", HttpStatus.BAD_REQUEST)
     }

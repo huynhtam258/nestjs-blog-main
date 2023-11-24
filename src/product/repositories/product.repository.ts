@@ -16,7 +16,11 @@ export class ProductReponsitory extends Repository<ProductEntity> {
 
   async findAll (items_per_page: number, skip: number) {
     return await this.findAndCount({
-      where: [],
+      where: [
+        {
+          isPublish: true
+        }
+      ],
       take: items_per_page,
       skip: skip
     })
@@ -38,7 +42,7 @@ export class ProductReponsitory extends Repository<ProductEntity> {
     })
   }
 
-  async update (productId: number, product: ProductEntity) {
+  async updateProduct (productId: number, product: ProductEntity) {
     return await this.update(productId, {
       ...product,
     })
