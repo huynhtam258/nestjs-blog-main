@@ -17,10 +17,12 @@ export class PostService {
     public async create(userId: number, createPostDto: CreatePostDto): Promise<Post> {
         const user = await this.userRepository.findOneBy({ id: userId })
         try {
-            return await this.postRepository.save({
+            const post = await this.postRepository.save({
                 ...createPostDto,
+                publish: false,
                 user
             })
+            return post
         } catch (error) {
             throw new HttpException("Can't create post", HttpStatus.BAD_REQUEST)
         }
