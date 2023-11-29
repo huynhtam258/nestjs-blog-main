@@ -1,17 +1,17 @@
 import {
-    Controller,
-    Get,
-    Post,
-    Put,
-    Delete,
-    Body,
-    UseGuards,
-    Param,
-    Query,
-    Req,
-    UploadedFile,
-    BadRequestException,
-    UseInterceptors
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  UseGuards,
+  Param,
+  Query,
+  Req,
+  UploadedFile,
+  UseInterceptors,
+  Patch
 } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
@@ -30,54 +30,45 @@ import { fileFilter } from 'utils/file';
 @ApiTags('Users')
 @Controller('user')
 export class UserController {
-    constructor(private userService: UserService) { }
+  constructor(private userService: UserService) { }
 
-    @UseGuards(AuthGuard)
-    @ApiQuery({ name: 'page' })
-    @ApiQuery({ name: 'items_per_page' })
-    @ApiQuery({ name: 'search' })
-    @Get()
-    findAll(@Query() query: FilterUserDto): Promise<Pagination<User[]>> {
-        return this.userService.findAll(query)
-    }
+  @UseGuards(AuthGuard)
+  @ApiQuery({ name: 'page' })
+  @ApiQuery({ name: 'items_per_page' })
+  @ApiQuery({ name: 'search' })
+  @Get()
+  findAll(@Query() query: FilterUserDto): Promise<Pagination<User[]>> {
+    return this.userService.findAll(query)
+  }
 
-    @UseGuards(AuthGuard)
-    @Get(':id')
-    findOne(@Param('id') id: string): Promise<User> {
-        return this.userService.findOne(Number(id))
-    }
+  @UseGuards(AuthGuard)
+  @Get(':id')
+  findOne(@Param('id') id: string): Promise<User> {
+    return this.userService.findOne(Number(id))
+  }
 
-    @UseGuards(AuthGuard)
-    @Post()
-    create(@Body() createUserDto: CreateUserDto): Promise<User> {
-        return this.userService.create(createUserDto)
-    }
+  @UseGuards(AuthGuard)
+  @Post()
+  create(@Body() createUserDto: CreateUserDto): Promise<User> {
+    return this.userService.create(createUserDto)
+  }
 
-    @UseGuards(AuthGuard)
-    @Put(':id')
-    update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-        return this.userService.update(Number(id), updateUserDto)
-    }
+  @UseGuards(AuthGuard)
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.update(Number(id), updateUserDto)
+  }
 
-    @UseGuards(AuthGuard)
-    @Delete()
-    delete(@Param('id') id: string) {
-        return this.userService.delete(Number(id))
-    }
+  @UseGuards(AuthGuard)
+  @Delete()
+  delete(@Param('id') id: string) {
+    return this.userService.delete(Number(id))
+  }
 
-    @UseGuards(AuthGuard)
-    @Post('upload-avatar')
-    @UseInterceptors(FileInterceptor('avatar', {
-        storage: storageConfig('avatar'),
-        fileFilter: fileFilter
-    }))
-    uploadAvatar(@Req() req: CommonRequest, @UploadedFile() file: Express.Multer.File) {
-        if (req.fileValidationError) {
-            throw new BadRequestException(req.fileValidationError);
-        }
-        if (!file) {
-            throw new BadRequestException('File is required')
-        }
-        return this.userService.updateAvatar(req.user_data.id, file.destination + '/' + file.filename);
-    }
+  @UseGuards(AuthGuard)
+  @Patch('upload-avatar')
+  @UseInterceptors(FileInterceptor('file'))
+  uploadAvatar(@Req() req: CommonRequest, @UploadedFile() file: Express.Multer.File) {
+    return this.userService.updateAvatar(req.user_data.id, file);
+  }
 }

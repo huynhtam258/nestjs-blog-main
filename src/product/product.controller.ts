@@ -9,50 +9,50 @@ import { Pagination } from 'src/core/interfaces/pagination.interface';
 import { Product as ProductEntity } from './entities/product.entity';
 @Controller('products')
 export class ProductController {
-    constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService) { }
 
-    @UseGuards(AuthGuard)
-    @UsePipes(ValidationPipe)
-    @Post()
-    create(@Body() createProductDto: CreateProductDto) {
-        return this.productService.create(createProductDto);
-    }
+  @UseGuards(AuthGuard)
+  @UsePipes(ValidationPipe)
+  @Post()
+  create(@Body() createProductDto: CreateProductDto) {
+    return this.productService.create(createProductDto);
+  }
 
-    @UseGuards(AuthGuard)
-    @UsePipes(ValidationPipe)
-    @Put('upload-thumbnail/:id')
-    @UseInterceptors(FileInterceptor('file'))
-    updateImageProduct(@Param('id') id: string, @UploadedFile() file: Express.Multer.File) {
-        return this.productService.updateImage(Number(id), file)
-    }
+  @UseGuards(AuthGuard)
+  @UsePipes(ValidationPipe)
+  @Put('upload-thumbnail/:id')
+  @UseInterceptors(FileInterceptor('file'))
+  updateImageProduct(@Param('id') id: string, @UploadedFile() file: Express.Multer.File) {
+    return this.productService.updateImage(Number(id), file)
+  }
 
-    @Get(":id")
-    findDetail(@Param('id') id: string) {
-        return this.productService.findDetail(Number(id))
-    }
-    
-    @Get()
-    findAll(@Query() query: FilterProductDto): Promise<Pagination<ProductEntity[]>> {
-        return this.productService.findAll(query)
-    }
-    
-    @UseGuards(AuthGuard)
-    @UsePipes(ValidationPipe)
-    @Put('/publish/:id')
-    publishProduct(@Param('id') id: string) {
-        return this.productService.publishProduct({
-            productId: Number(id), 
-            isPublish: true
-        })
-    }
+  @Get(":id")
+  findDetail(@Param('id') id: string) {
+    return this.productService.findDetail(Number(id))
+  }
 
-    @UseGuards(AuthGuard)
-    @UsePipes(ValidationPipe)
-    @Put('/unpublish/:id')
-    unPublishProduct(@Param('id') id: string) {
-        return this.productService.publishProduct({
-            productId: Number(id),
-            isPublish: false
-        })
-    }
+  @Get()
+  findAll(@Query() query: FilterProductDto): Promise<Pagination<ProductEntity[]>> {
+    return this.productService.findAll(query)
+  }
+
+  @UseGuards(AuthGuard)
+  @UsePipes(ValidationPipe)
+  @Put('/publish/:id')
+  publishProduct(@Param('id') id: string) {
+    return this.productService.publishProduct({
+      productId: Number(id),
+      isPublish: true
+    })
+  }
+
+  @UseGuards(AuthGuard)
+  @UsePipes(ValidationPipe)
+  @Put('/unpublish/:id')
+  unPublishProduct(@Param('id') id: string) {
+    return this.productService.publishProduct({
+      productId: Number(id),
+      isPublish: false
+    })
+  }
 }
