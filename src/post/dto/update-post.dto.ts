@@ -1,15 +1,15 @@
 export class UpdatePostDto {
-    title: string;
+  title: string;
 
-    description: string;
+  description: string;
 
-    thumbnail: string;
+  thumbnail: string;
 
-    status: number;
+  status: number;
 
-    content: string;
+  content: string;
 
-    publish: boolean;
+  publish: boolean;
 
-    publish_date: string;
+  publish_date: string;
 }

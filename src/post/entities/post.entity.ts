@@ -4,39 +4,39 @@ import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } f
 
 @Entity()
 export class Post {
-    @PrimaryGeneratedColumn()
-    id: number
+  @PrimaryGeneratedColumn()
+  id: number
 
-    @Column()
-    title: string
+  @Column()
+  title: string
 
-    @Column()
-    description: string
+  @Column()
+  description: string
 
-    @Column()
-    thumbnail: string
+  @Column()
+  thumbnail: string
 
-    @Column({ type: 'int', default: 1 })
-    status: number
+  @Column({ type: 'int', default: 1 })
+  status: number
 
-    @Column({ type: 'longtext'})
-    content: string
+  @Column({ type: 'longtext' })
+  content: string
 
-    @Column()
-    publish: boolean
+  @Column()
+  publish: boolean
 
-    @CreateDateColumn()
-    publish_date: Date
-    
-    @CreateDateColumn()
-    created_at: Date
+  @CreateDateColumn()
+  publish_date: Date
 
-    @CreateDateColumn()
-    updated_at: Date
+  @CreateDateColumn()
+  created_at: Date
 
-    @ManyToOne(() => User, (user) => user.posts)
-    user: User
+  @CreateDateColumn()
+  updated_at: Date
 
-    @ManyToOne(() => Category, (category) => category.posts)
-    category: Category
+  @ManyToOne(() => User, (user) => user.posts)
+  user: User
+
+  @ManyToOne(() => Category, (category) => category.posts)
+  category: Category
 }

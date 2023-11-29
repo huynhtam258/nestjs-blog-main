@@ -1,7 +1,7 @@
 export class FilterUserDto {
-    page: string
+  page: string
 
-    items_per_page: string
-    
-    search: string
+  items_per_page: string
+
+  search: string
 }

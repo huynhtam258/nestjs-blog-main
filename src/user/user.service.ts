@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm'
 import { User } from './entities/user.entity';
 import { Repository, UpdateResult, DeleteResult, Like } from 'typeorm'
@@ -14,9 +14,7 @@ export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
     private cloudinaryService: CloudinaryService,
-  ) {
-
-  }
+  ) { }
 
   async findAll(query: FilterUserDto): Promise<Pagination<User[]>> {
     const items_per_page = Number(query.items_per_page) || 10;
@@ -72,7 +70,11 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
-    return await this.userRepository.update(id, updateUserDto);
+    try {
+      return await this.userRepository.update(id, updateUserDto);
+    } catch (error) {
+      throw new HttpException("Can't update profile", HttpStatus.BAD_REQUEST)
+    }
   }
 
   async delete(id: number): Promise<DeleteResult> {
@@ -80,19 +82,15 @@ export class UserService {
   };
 
   async updateAvatar(id: number, file: Express.Multer.File): Promise<UpdateResult> {
-
     try {
       const user = await this.userRepository.findOneBy({
         id: id
       })
       const cloudinaryResult = await this.cloudinaryService.uploadFile(file)
       const avatar_url = cloudinaryResult.url
-      console.log(cloudinaryResult);
-
       return await this.userRepository.update(id, { ...user, avatar: avatar_url });
     } catch (error) {
-
+      throw new HttpException("Can't upload avatar", HttpStatus.BAD_REQUEST)
     }
-
   };
 }

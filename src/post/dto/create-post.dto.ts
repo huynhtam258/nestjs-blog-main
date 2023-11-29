@@ -1,19 +1,19 @@
 import { User } from "src/user/entities/user.entity"
 
 export class CreatePostDto {
-    title: string
+  title: string
 
-    description: string
+  description: string
 
-    thumbnail: string
+  thumbnail: string
 
-    status: number
+  status: number
 
-    user: User
+  user: User
 
-    content: string
+  content: string
 
-    publish: boolean
+  publish: boolean
 
-    publish_date: string
+  publish_date: string
 }

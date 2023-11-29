@@ -1,4 +1,4 @@
 export interface PublishProduct {
-    productId: number,
-    isPublish: boolean
+  productId: number,
+  isPublish: boolean
 }
