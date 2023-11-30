@@ -1,19 +1,19 @@
-import { 
-    Controller, 
-    Get, 
-    Post, 
-    Put,
-    Req, 
-    Query, 
-    Body, 
-    Param,
-    UseInterceptors,
-    UploadedFile, 
-    UseGuards, 
-    UsePipes, 
-    ValidationPipe, 
-    BadRequestException,
-    Delete
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Req,
+  Query,
+  Body,
+  Param,
+  UseInterceptors,
+  UploadedFile,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+  BadRequestException,
+  Delete
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { FileInterceptor } from '@nestjs/platform-express'
@@ -29,50 +29,50 @@ import { Post as PostEntity } from './entities/post.entity';
 
 @Controller('post')
 export class PostController {
-    constructor(private postService: PostService) {}
+  constructor(private postService: PostService) { }
 
-    @UseGuards(AuthGuard)
-    @UsePipes(ValidationPipe)
-    @Post() 
-    create(@Body() createPostDto: CreatePostDto) {
-        return this.postService.create(+createPostDto.user, createPostDto);
+  @UseGuards(AuthGuard)
+  @UsePipes(ValidationPipe)
+  @Post()
+  create(@Body() createPostDto: CreatePostDto) {
+    return this.postService.create(+createPostDto.user, createPostDto);
+  }
+
+  @Get()
+  findAll(@Query() query: FilterPostDto): Promise<Pagination<PostEntity[]>> {
+    return this.postService.findAll(query)
+  }
+
+  @Get(':id')
+  findDetail(@Param('id') id: string) {
+    return this.postService.findDetail(Number(id))
+  }
+
+  @UseGuards(AuthGuard)
+  @Put(':id')
+  @UseInterceptors(FileInterceptor('thumbnail', {
+    storage: storageConfig('post'),
+    fileFilter: fileFilter
+  }))
+  update(
+    @Param('id') id: string,
+    @Req() req: CommonRequest,
+    @Body() updatePostDto: UpdatePostDto,
+    @UploadedFile() file: Express.Multer.File
+  ) {
+    if (req.fileValidationError) {
+      throw new BadRequestException(req.fileValidationError)
     }
 
-    @Get()
-    findAll(@Query() query: FilterPostDto): Promise<Pagination<PostEntity[]>> {
-        return this.postService.findAll(query)
+    if (file) {
+      updatePostDto.thumbnail = file.destination + '/' + file.filename;
     }
 
-    @Get(':id')
-    findDetail(@Param('id') id: string) {
-        return this.postService.findDetail(Number(id))
-    }
-    
-    @UseGuards(AuthGuard)
-    @Put(':id')
-    @UseInterceptors(FileInterceptor('thumbnail', {
-        storage: storageConfig('post'),
-        fileFilter: fileFilter
-    }))
-    update(
-        @Param('id') id: string, 
-        @Req() req: CommonRequest, 
-        @Body() updatePostDto: UpdatePostDto, 
-        @UploadedFile() file: Express.Multer.File
-    ) {
-        if (req.fileValidationError) {
-            throw new BadRequestException(req.fileValidationError)
-        }
-
-        if (file) {
-            updatePostDto.thumbnail = file.destination + '/' + file.filename;
-        }
-
-        return this.postService.update(Number(id), updatePostDto)
-    }
-    @UseGuards(AuthGuard)
-    @Delete(':id')
-    delete(@Param('id') id: string) {
-        return this.postService.delete(Number(id))
-    }
+    return this.postService.update(Number(id), updatePostDto)
+  }
+  @UseGuards(AuthGuard)
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.postService.delete(Number(id))
+  }
 }
