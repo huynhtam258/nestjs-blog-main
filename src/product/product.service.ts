@@ -22,31 +22,7 @@ export class ProductService {
   ) { }
 
   public async findAll(@Query() query: FilterProductDto): Promise<Pagination<Product[]>> {
-    const items_per_page = Number(query.items_per_page) || 10;
-
-    const page = Number(query.page) || 1
-
-    const search = query.search || ''
-
-    const skip = (page - 1) * items_per_page
-
-    const [res, total] = await this._productRepository.findAll(items_per_page, skip)
-
-    const lastPage = Math.ceil(total / items_per_page);
-    const nextPage = page + 1 > lastPage ? null : page + 1
-    const prevPage = page - 1 < 1 ? null : page - 1;
-
-    // caching data
-    await this.cacheManager.set(PRODUCTS, res);
-
-    return {
-      data: res,
-      total,
-      currentPage: page,
-      nextPage,
-      prevPage,
-      lastPage
-    }
+    return await this._productRepository.findAll(query)
   }
 
   public async create(createProductDto: CreateProductDto): Promise<Product> {
