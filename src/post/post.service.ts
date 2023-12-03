@@ -7,13 +7,13 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { FilterPostDto } from './dto/filter-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Pagination } from 'src/core/interfaces/pagination.interface';
-import { PostReponsitory } from './repositories/post.repository';
+import { PostRepository } from './repositories/post.repository';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
-    private _postRepository: PostReponsitory
+    private _postRepository: PostRepository
   ) { }
   public async create(userId: number, createPostDto: CreatePostDto): Promise<Post> {
     try {

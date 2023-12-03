@@ -1,70 +1,34 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Cart } from './entities/cart.entity';
-import { Repository } from 'typeorm';
-import { CartItem } from './entities/cart-item.entity';
-import { Product } from 'src/product/entities/product.entity';
-import { User } from 'src/user/entities/user.entity';
+import { CartRepository } from './repositories/cart.repository';
 @Injectable()
 export class CartService {
-  constructor(
-    @InjectRepository(Cart)
-    private cartRepository: Repository<Cart>,
-    @InjectRepository(CartItem)
-    private cartItemRepository: Repository<CartItem>,
-    @InjectRepository(Product)
-    private productRepository: Repository<Product>,
-    @InjectRepository(User)
-    private userRepository: Repository<User>
-  ) { }
+  constructor( private _cartRepository: CartRepository ) { }
 
   async createCart(userId: number): Promise<Cart> {
-    const user = await this.userRepository.findOneBy({ id: userId })
-
-    if (!user) {
-      throw new HttpException("Can't find user", HttpStatus.BAD_REQUEST)
+    try {
+      const cart = await this._cartRepository.createCart(userId)
+      return cart
+    } catch (error) {
+      throw new HttpException("Can't create cart", HttpStatus.BAD_REQUEST)
     }
-    const cart = await this.cartRepository.save({  user });
-    return cart
   }
 
   async addToCart(userId: number, cartId: number, productId: number, quantity: number): Promise<Cart> {
-    const cart = await this.cartRepository.findOne({
-      where: {
-        id: cartId
-      },
-      relations: ['items', 'items.product']
-    });
-    // if (cart.user.id !== userId) {
-    //   throw new HttpException("Can't find cart", HttpStatus.BAD_REQUEST)
-    // }
-    const product = await this.productRepository.findOne({
-      where: {
-        id: productId
-      }
-    });
-    
-    let cartItem = cart.items.find(item => item.product.id === productId);
-    if (cartItem) {
-      cartItem.quantity += quantity;
-    } else {
-      cartItem = await this.cartItemRepository.save({ product, quantity });
-      cart.items.push(cartItem);
+    try {
+      const cart = await this._cartRepository.addToCart(userId, cartId, productId, quantity)
+      return cart
+    } catch (error) {
+      throw new HttpException("Can't add to cart", HttpStatus.BAD_REQUEST)
     }
-  
-    return this.cartRepository.save(cart);
   }
 
-  async getCart(userId: number, cartId: number) {
-    const cart = await this.cartRepository.findOne({
-      where: {
-        id: cartId,
-        user: {
-          id: userId
-        }
-      },
-      relations: ['items', 'items.product']
-    })
-    return cart
+  async getCart(userId: number, cartId: number): Promise<Cart> {
+    try {
+      const cart = await this._cartRepository.getCart(userId, cartId);
+      return  cart
+    } catch (error) {
+      throw new HttpException("Can't find to cart", HttpStatus.BAD_REQUEST)
+    }
   }
 }

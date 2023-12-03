@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Category } from './entites/category.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
+import { CartRepository } from 'src/cart/repositories/cart.repository';
 
 @Module({
   imports: [
@@ -13,6 +14,6 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule
   ],
   controllers: [CategoryController],
-  providers: [CategoryService]
+  providers: [CategoryService, CartRepository]
 })
 export class CategoryModule {}

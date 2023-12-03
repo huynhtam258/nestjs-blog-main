@@ -8,7 +8,7 @@ import { FilterPostDto } from "../dto/filter-post.dto";
 import { Pagination } from "src/core/interfaces/pagination.interface";
 
 @Injectable()
-export class PostReponsitory extends Repository<PostEntity> {
+export class PostRepository extends Repository<PostEntity> {
   constructor(dataSource: DataSource) {
     super(PostEntity, dataSource.createEntityManager())
   }
