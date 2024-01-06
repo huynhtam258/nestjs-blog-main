@@ -16,7 +16,9 @@ export class CategoryService {
 
     async create(createCategoryDto: CreateCategoryDto): Promise<Category>{
         try {   
-            const category = await this.categoryRepository.save({})
+            const category = await this.categoryRepository.save({
+               ...createCategoryDto
+            })
             return category
         } catch (error) {
             throw new HttpException("Can't create category", HttpStatus.BAD_REQUEST)

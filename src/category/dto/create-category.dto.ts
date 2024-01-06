@@ -5,5 +5,5 @@ export class CreateCategoryDto {
 
     description: string
 
-    status: string
+    status: number
 }
