@@ -9,6 +9,7 @@ import { Product } from 'src/product/entities/product.entity';
 import { User } from 'src/user/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
+import { CartRepository } from './repositories/cart.repository';
 
 @Module({
   imports: [
@@ -18,6 +19,6 @@ import { ConfigModule } from '@nestjs/config';
     CacheModule.register()
   ],
   controllers: [CartController],
-  providers: [CartService]
+  providers: [CartService, CartRepository]
 })
 export class CartModule { }
