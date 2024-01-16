@@ -2,14 +2,26 @@ version: '3.1'
 
 services:
 
-  mysql:
-    image: mysql
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
+  backend:
+    container_name: blog-nestjs-app
+    build: ./
+    env_file: ./.env.local
     ports:
-      - 33061:3306
-    volumes:
-      - ./../mysql-server:/lib/mysql
+      - 5000:5000
+    environment:
+      - SECRET=$SECRET
+      - EXP_IN_REFRESH_TOKEN=$EXP_IN_REFRESH_TOKEN
+      - EXP_IN_ACCESS_TOKEN=$EXP_IN_ACCESS_TOKEN
+      - CLOUDINARY_NAME=$CLOUDINARY_NAME
+      - CLOUDINARY_API_KEY=$CLOUDINARY_API_KEY
+      - CLOUDINARY_API_SECRET=$CLOUDINARY_API_SECRET
+      - NODE_ENV=$NODE_ENV
+      - DATABASE_PORT=$DATABASE_PORT
+      - DATABASE_HOST=$DATABASE_HOST
+      - DATABASE_USERNAME=$DATABASE_USERNAME
+      - DATABASE_PASSWORD=$DATABASE_PASSWORD
+    networks:
+      - default
+
 # username: root
 # password: root
