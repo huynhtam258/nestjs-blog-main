@@ -20,11 +20,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FilterUserDto } from './dto/filter-user.dto';
 import { ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
-import { storageConfig } from 'helpers/config';
+// import { storageConfig } from 'helpers/config';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CommonRequest } from 'src/core/interfaces/request.interface';
 import { Pagination } from 'src/core/interfaces/pagination.interface';
-import { fileFilter } from 'utils/file';
+// import { fileFilter } from 'utils/file';
 
 @ApiBearerAuth()
 @ApiTags('Users')
@@ -39,6 +39,12 @@ export class UserController {
   @Get()
   findAll(@Query() query: FilterUserDto): Promise<Pagination<User[]>> {
     return this.userService.findAll(query)
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('profile')
+  profile(@Req() req: CommonRequest): Promise<User> {
+    return this.userService.findOne(req.user_data.id)
   }
 
   @UseGuards(AuthGuard)
