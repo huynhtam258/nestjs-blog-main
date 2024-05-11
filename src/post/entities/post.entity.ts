@@ -13,7 +13,7 @@ export class Post {
   @Column()
   description: string
 
-  @Column()
+  @Column({ default: false })
   thumbnail: string
 
   @Column({ type: 'int', default: 1 })
@@ -24,6 +24,9 @@ export class Post {
 
   @Column()
   publish: boolean
+
+  @Column()
+  is_deleted: boolean
 
   @CreateDateColumn()
   publish_date: Date

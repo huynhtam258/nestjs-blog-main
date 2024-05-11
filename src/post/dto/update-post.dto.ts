@@ -11,5 +11,7 @@ export class UpdatePostDto {
 
   publish: boolean;
 
-  publish_date: string;
+  publish_date: Date;
+
+  is_deleted?: boolean;
 }

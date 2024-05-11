@@ -13,7 +13,7 @@ import {
   UsePipes,
   ValidationPipe,
   BadRequestException,
-  Delete
+  Patch
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { FileInterceptor } from '@nestjs/platform-express'
@@ -70,8 +70,9 @@ export class PostController {
 
     return this.postService.update(Number(id), updatePostDto)
   }
+
   @UseGuards(AuthGuard)
-  @Delete(':id')
+  @Patch('/delete/:id')
   delete(@Param('id') id: string) {
     return this.postService.delete(Number(id))
   }

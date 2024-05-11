@@ -33,7 +33,8 @@ export class PostRepository extends Repository<PostEntity> {
     const [res, total] = await this.findAndCount({
       where: [
         {
-          title: Like('%' + search + '%')
+          title: Like('%' + search + '%'),
+          is_deleted: false
         },
         {
           description: Like('%' + search + '%')

@@ -64,8 +64,25 @@ export class PostService {
     }
   }
 
-  public async delete(id: number): Promise<DeleteResult> {
-    return await this._postRepository.delete(id);
+  public async delete(id: number): Promise<UpdateResult> {
+    try {
+      const post = await this._postRepository.findDetail(id)
+      const postUpdate: UpdatePostDto = { 
+        content: post.content, 
+        description: post.description, 
+        publish: post.publish, 
+        publish_date: post.publish_date, 
+        status: post.status, 
+        thumbnail: post.thumbnail, 
+        title: post.title, 
+        is_deleted: true 
+      }
+
+      return await this._postRepository.updatePost(id, postUpdate)
+      
+    } catch (error) {
+      new HttpException("Can't update post", HttpStatus.BAD_REQUEST)
+    }
   };
 
 }
