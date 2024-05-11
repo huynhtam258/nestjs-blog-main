@@ -15,7 +15,7 @@ services:
       - CLOUDINARY_NAME=darzhlzpy
       - CLOUDINARY_API_KEY=334258369538565
       - CLOUDINARY_API_SECRET=pygBOLxX2wBflpuDzyewy82N0CQ
-      - NODE_ENV=local
+      - NODE_ENV=development
       - DATABASE_PORT=33061
       - DATABASE_HOST=host.docker.internal
       - DATABASE_USERNAME=root
