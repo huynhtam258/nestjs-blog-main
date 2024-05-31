@@ -29,7 +29,17 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+## Syntax create file
+```bash
+# add a service
+$ nest g service service_name
 
+# add a controller
+$ nest g service controller_name
+
+# add a module
+$ nest g module module_name
+```
 
 ## Migration
 

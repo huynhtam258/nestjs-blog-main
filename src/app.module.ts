@@ -11,6 +11,7 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { ProductModule } from './product/product.module';
 import { CartModule } from './cart/cart.module';
 import { CacheModule } from '@nestjs/cache-manager';
+import { MediaModule } from './media/media.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -36,7 +37,8 @@ import { CacheModule } from '@nestjs/cache-manager';
     CartModule,
     CacheModule.register({
       ttl: 0 // mili seconds
-    })
+    }),
+    MediaModule
   ],
   controllers: [AppController],
   providers: [AppService],
