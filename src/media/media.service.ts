@@ -29,4 +29,9 @@ export class MediaService {
       throw new HttpException("Can't upload media", HttpStatus.BAD_REQUEST)
     }
   }
+
+  async getMediaByUserId(userId: number): Promise<{id: number, media_url: string, media_type: string}[]> {
+    const media = await this._mediaRepository.findAllMediaByUserId(userId) as any[]
+    return media 
+  }
 }

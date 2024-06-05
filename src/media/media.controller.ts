@@ -1,4 +1,4 @@
-import { Controller, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { MediaService } from './media.service';
@@ -14,5 +14,12 @@ export class MediaController {
   uploadImage(@Req() req: CommonRequest, @UploadedFile() file: Express.Multer.File) {
     const { user_data } = req
     return this.mediaService.uploadFile(Number(user_data.id), file);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('')
+  getMediaBygUserId(@Req() req: CommonRequest) {
+    const { user_data } = req
+    return this.mediaService.getMediaByUserId(Number(user_data.id))
   }
 }

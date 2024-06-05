@@ -24,4 +24,16 @@ export class MediaRepository extends Repository<MediaEntity> {
     const media = await this.save({ media_type: 'IMAGE', media_url })
     return media
   }
+
+  async findAllMediaByUserId(userId: number) {
+    const result = await this.find({
+      where: {
+        user: {
+          id: userId
+        }
+      }
+    })
+
+    return result || []
+  }
 }
