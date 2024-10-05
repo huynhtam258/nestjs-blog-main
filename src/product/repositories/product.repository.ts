@@ -5,6 +5,7 @@ import { PublishProduct } from '../dto/publish-product.dto';
 import { CreateProductDto } from './../dto/create-product-dto';
 import { FilterProductDto } from '../dto/filter-product.dto';
 import { Pagination } from 'src/core/interfaces/pagination.interface';
+import { DraftProduct } from '../dto/draft-product.dto';
 
 @Injectable()
 export class ProductReponsitory extends Repository<ProductEntity> {
@@ -60,8 +61,14 @@ export class ProductReponsitory extends Repository<ProductEntity> {
   async updatePublishProduct (product: ProductEntity, publishProduct: PublishProduct) {
     return await this.update(publishProduct.productId, {
       ...product,
-      isDraft: !publishProduct.isPublish,
       isPublish: publishProduct.isPublish
+    })
+  }
+
+  async updateDraftProduct (product: ProductEntity, draftProduct: DraftProduct) {
+    return await this.update(draftProduct.productId, {
+      ...product,
+      isDraft: draftProduct.isDraft
     })
   }
 
