@@ -1,4 +1,4 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
 type ProductType = "Electronics" | "Clothing" | "Furniture"
 @Entity()
@@ -37,4 +37,10 @@ export class Product {
   @Column({ type: 'boolean', default: false })
   @Index()
   isPublish: boolean;
+
+  @CreateDateColumn()
+  created_at: Date
+
+  @CreateDateColumn()
+  updated_at: Date
 }

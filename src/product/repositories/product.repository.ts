@@ -28,7 +28,7 @@ export class ProductReponsitory extends Repository<ProductEntity> {
     const [res, total] = await this.findAndCount({
       where: [
         {
-          isPublish: true
+          isDraft: false
         }
       ],
       take: items_per_page,
