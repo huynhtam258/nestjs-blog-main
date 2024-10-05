@@ -55,4 +55,14 @@ export class ProductController {
       isPublish: false
     })
   }
+
+  @UseGuards(AuthGuard)
+  @UsePipes(ValidationPipe)
+  @Put('/draft/:id')
+  draftProduct(@Param('id') id: string) {
+    return this.productService.draftProduct({
+      productId: Number(id),
+      isDraft: true
+    })
+  }
 }
