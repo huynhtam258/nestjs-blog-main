@@ -21,8 +21,9 @@ export class MediaService {
       }
 
       const url = (data.url || '') as string
+      const imageId = data.public_id
 
-      const media = await this._mediaRepository.createMedia(userId, url)
+      const media = await this._mediaRepository.createMedia(userId, url, imageId)
       return media
     } catch (error) {
       console.log(error)

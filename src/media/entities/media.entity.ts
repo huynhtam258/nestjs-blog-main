@@ -20,4 +20,7 @@ export class Media {
     enum: ['IMAGE'],
   })
   media_type: MediaType
+
+  @Column()
+  image_id: string;
 }

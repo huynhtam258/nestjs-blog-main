@@ -14,14 +14,14 @@ export class MediaRepository extends Repository<MediaEntity> {
     super(MediaEntity, dataSource.createEntityManager())
   }
 
-  async createMedia(userId: number, media_url: string ): Promise<MediaEntity> {
+  async createMedia(userId: number, media_url: string, image_id: string ): Promise<MediaEntity> {
     const user = await this.userRepository.findOneBy({ id: userId })
 
     if (!user) {
       throw new HttpException("Can't find user", HttpStatus.BAD_REQUEST)
     }
 
-    const media = await this.save({ media_type: 'IMAGE', media_url })
+    const media = await this.save({ media_type: 'IMAGE', media_url, image_id })
     return media
   }
 
