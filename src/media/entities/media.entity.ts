@@ -23,4 +23,7 @@ export class Media {
 
   @Column()
   image_id: string;
+
+  @Column()
+  is_deleted: boolean
 }

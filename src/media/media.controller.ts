@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Param, Patch, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { MediaService } from './media.service';
@@ -21,5 +21,11 @@ export class MediaController {
   getMediaBygUserId(@Req() req: CommonRequest) {
     const { user_data } = req
     return this.mediaService.getMediaByUserId(Number(user_data.id))
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch('/delete/:id')
+  deleteImage(@Param('id') id: string ) {
+    return this.mediaService.deleteImage(id);
   }
 }

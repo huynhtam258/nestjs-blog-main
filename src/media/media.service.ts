@@ -26,7 +26,6 @@ export class MediaService {
       const media = await this._mediaRepository.createMedia(userId, url, imageId)
       return media
     } catch (error) {
-      console.log(error)
       throw new HttpException("Can't upload media", HttpStatus.BAD_REQUEST)
     }
   }
@@ -34,5 +33,15 @@ export class MediaService {
   async getMediaByUserId(userId: number): Promise<{id: number, media_url: string, media_type: string}[]> {
     const media = await this._mediaRepository.findAllMediaByUserId(userId) as any[]
     return media 
+  }
+
+  async deleteImage (image_id: string) {
+    try {
+      const cloudinaryResponse = await this._cloudinaryService.deleteImage(image_id)
+      await this._mediaRepository.deleteMedia(image_id)
+      return cloudinaryResponse
+    } catch (error) {
+      throw new HttpException("Can't delete media", HttpStatus.BAD_REQUEST)
+    }
   }
 }
