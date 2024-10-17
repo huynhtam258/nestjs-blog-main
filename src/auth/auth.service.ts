@@ -10,6 +10,7 @@ import { ConfigService } from '@nestjs/config';
 import { ResponseRefreshToken } from './interfaces/refresh-token.interface';
 import { ResponseLogin } from './interfaces/login.interface';
 import { randomBytes } from 'crypto'
+import { resetPasswordDto } from './dto/reset-password.dto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -85,6 +86,27 @@ export class AuthService {
 
       throw new HttpException('Refresh token is not valid', HttpStatus.BAD_REQUEST)
     }
+  }
+
+  public async resetPassword (resetPasswordDto: resetPasswordDto) {
+    const user = await this.userRepository.findOne({
+      where: { email: resetPasswordDto.email }
+    });
+
+    if (!user) {
+      throw new HttpException('Email is not exist', HttpStatus.UNAUTHORIZED)
+    }
+
+    const checkPass = bcrypt.compareSync(resetPasswordDto.password, user.password)
+
+    if (!checkPass) {
+      throw new HttpException('Password is not correct', HttpStatus.UNAUTHORIZED)
+    }
+
+    const hashPassword = await this.hashPassword(resetPasswordDto.newPassword)
+    return await this.userRepository.update(user.id, {
+      password: hashPassword
+    })
   }
 
   private async generateToken(payload: { id: number, email: string, key: string }) {

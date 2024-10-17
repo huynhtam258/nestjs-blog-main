@@ -7,6 +7,7 @@ import { User } from 'src/user/entities/user.entity';
 import { RefreshTokenUserDto } from './dto/refreshToken-user';
 import { ResponseLogin } from './interfaces/login.interface';
 import { ResponseRefreshToken } from './interfaces/refresh-token.interface';
+import { resetPasswordDto } from './dto/reset-password.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -31,5 +32,10 @@ export class AuthController {
   @Post('refresh-token')
   refreshToken(@Body() refreshtTokenUserDto: RefreshTokenUserDto): Promise<ResponseRefreshToken> {
     return this.authService.refreshToken(refreshtTokenUserDto.refresh_token)
+  }
+
+  @Post('reset-password')
+  resetPassword(@Body() resetPasswordDto: resetPasswordDto): Promise<any> {
+    return this.authService.resetPassword(resetPasswordDto)
   }
 }
