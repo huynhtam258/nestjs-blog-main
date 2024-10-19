@@ -1,5 +1,6 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { User } from "src/user/entities/user.entity";
+import { Product } from 'src/product/entities/product.entity';
+import { User } from 'src/user/entities/user.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinColumn, ManyToOne, JoinTable } from 'typeorm';
 
 export type MediaType = 'IMAGE'
 
@@ -26,4 +27,11 @@ export class Media {
 
   @Column()
   is_deleted: boolean
+
+  @ManyToMany(
+    () => Product,
+    product => product.medias,
+    { onDelete: 'NO ACTION', onUpdate: 'NO ACTION' },
+  )
+  products?: Product[];
 }
