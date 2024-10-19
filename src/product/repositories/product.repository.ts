@@ -6,16 +6,39 @@ import { CreateProductDto } from './../dto/create-product-dto';
 import { FilterProductDto } from '../dto/filter-product.dto';
 import { Pagination } from 'src/core/interfaces/pagination.interface';
 import { DraftProduct } from '../dto/draft-product.dto';
+import { ProductMedia } from 'src/product-media/entities/productMedia.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class ProductReponsitory extends Repository<ProductEntity> {
-  constructor(dataSource: DataSource) {
+  constructor(
+    dataSource: DataSource,
+    @InjectRepository(ProductMedia)
+    private readonly productMediaReponsitory: Repository<ProductMedia>
+  ) {
     super(ProductEntity, dataSource.createEntityManager())
   }
   
-  async createProduct (product: CreateProductDto) {
-    return await this.save(product)
+  async createProduct(productDto: CreateProductDto) {
+    const { media, ...productData } = productDto;
+  
+    const product = this.create(productData);
+    await this.save(product);
+  
+    if (media && media.length > 0) {
+      const productMediaEntities = media.map(mediaId => {
+        const productMedia = new ProductMedia();
+        productMedia.productId = product.id;
+        productMedia.mediaId = mediaId;
+        return productMedia;
+      });
+      await this.productMediaReponsitory.save(productMediaEntities);
+    }
+  
+    return product;
   }
+  
+  
 
   async findAll (query: FilterProductDto): Promise<Pagination<Product[]>> {
     const items_per_page = Number(query.items_per_page) || 10;
