@@ -1,4 +1,6 @@
-import { Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import { Media } from "src/media/entities/media.entity";
+// import { ProductMedia } from "src/product-media/entities/productMedia.entity";
+import { Column, CreateDateColumn, Entity, Index, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
 type ProductType = "Electronics" | "Clothing" | "Furniture"
 @Entity()
@@ -43,4 +45,21 @@ export class Product {
 
   @CreateDateColumn()
   updated_at: Date
+
+  @ManyToMany(
+    () => Media, media => media.products,
+    { onDelete: 'NO ACTION', onUpdate: 'NO ACTION' }
+  )
+  @JoinTable({
+    name: 'product_media',
+    joinColumn: {
+      name: 'product_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'media_id',
+      referencedColumnName: 'id',
+    }
+  })
+  media?: Media[]
 }

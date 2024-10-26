@@ -8,9 +8,10 @@ import { Product } from './entities/product.entity';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { ProductReponsitory } from './repositories/product.repository';
 import { CacheModule } from '@nestjs/cache-manager'
+import { ProductMedia } from 'src/product-media/entities/productMedia.entity';
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Product]),
+    TypeOrmModule.forFeature([Product, ProductMedia]),
     JwtModule,
     ConfigModule,
     CacheModule.register()

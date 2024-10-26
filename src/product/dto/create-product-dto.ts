@@ -14,4 +14,6 @@ export class CreateProductDto {
 	product_quantity: number;
 
 	product_type: ProductType;
+
+	media: number[];
 }
