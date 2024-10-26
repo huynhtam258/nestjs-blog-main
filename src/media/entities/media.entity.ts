@@ -30,7 +30,7 @@ export class Media {
 
   @ManyToMany(
     () => Product,
-    product => product.medias,
+    product => product.media,
     { onDelete: 'NO ACTION', onUpdate: 'NO ACTION' },
   )
   products?: Product[];

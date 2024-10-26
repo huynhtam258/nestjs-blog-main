@@ -12,7 +12,7 @@ export class ProductMedia {
 
   @ManyToOne(
     () => Product,
-    product => product.medias,
+    product => product.media,
     {onDelete: 'NO ACTION', onUpdate: 'NO ACTION'}
   )
   @JoinColumn([{ name: 'product_id', referencedColumnName: 'id' }])
@@ -24,5 +24,5 @@ export class ProductMedia {
     { onDelete: 'NO ACTION', onUpdate: 'NO ACTION' }
   )
   @JoinColumn([{ name: 'media_id', referencedColumnName: 'id' }])
-  medias: Media[]
+  media: Media[]
 }

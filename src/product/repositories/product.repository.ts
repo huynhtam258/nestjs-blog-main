@@ -56,7 +56,8 @@ export class ProductReponsitory extends Repository<ProductEntity> {
         }
       ],
       take: items_per_page,
-      skip: skip
+      skip: skip,
+      relations: ['media']
     })
 
     const lastPage = Math.ceil(total / items_per_page);
@@ -77,7 +78,8 @@ export class ProductReponsitory extends Repository<ProductEntity> {
     return await this.findOne({
       where: {
         id: productId
-      }
+      },
+      relations: ['media']
     })
   }
 

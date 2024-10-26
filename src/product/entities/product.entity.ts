@@ -61,5 +61,5 @@ export class Product {
       referencedColumnName: 'id',
     }
   })
-  medias?: Media[]
+  media?: Media[]
 }
