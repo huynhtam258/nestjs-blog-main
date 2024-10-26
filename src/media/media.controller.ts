@@ -3,6 +3,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { MediaService } from './media.service';
 import { CommonRequest } from 'src/core/interfaces/request.interface';
+import { fileFilter } from 'utils/file';
 
 @Controller('media')
 export class MediaController {
@@ -10,7 +11,9 @@ export class MediaController {
   
   @UseGuards(AuthGuard)
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file', {
+    fileFilter: fileFilter
+  }))
   uploadImage(@Req() req: CommonRequest, @UploadedFile() file: Express.Multer.File) {
     const { user_data } = req
     return this.mediaService.uploadFile(Number(user_data.id), file);
