@@ -17,6 +17,7 @@ export class PostRepository extends Repository<PostEntity> {
     const post = await this.save({
       ...createPostDto,
       publish: false,
+      is_deleted: false,
       user
     })
     return post
