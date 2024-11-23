@@ -24,7 +24,7 @@
     "typeorm": "npm run build && npx typeorm -d dist/db/data-source.js",
     "migration:generate": "npm run typeorm -- migration:generate",
     "migration:run": "cross-env NODE_ENV=development npm run typeorm -- migration:run",
-    "migration:prod": "cross-env NODE_ENV=producttion npm run typeorm -- migration:run",
+    "migration:prod": "cross-env NODE_ENV=production npm run typeorm -- migration:run",
     "migration:revert": "npm run typeorm -- migration:revert"
   },
   "dependencies": {
