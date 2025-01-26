@@ -60,9 +60,9 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard)
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(Number(id), updateUserDto)
+  @Put('profile')
+  update(@Req() req: CommonRequest, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.update(Number(req.user_data.id), updateUserDto)
   }
 
   @UseGuards(AuthGuard)

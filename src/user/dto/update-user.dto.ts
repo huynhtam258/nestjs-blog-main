@@ -12,5 +12,9 @@ export class UpdateUserDto {
 
   @ApiProperty()
   @IsNotEmpty()
+  avatar: string
+  
+  @ApiProperty()
+  @IsNotEmpty()
   status: number
 }
