@@ -35,7 +35,7 @@ jobs:
             source ~/.nvm/nvm.sh
             cd ~/project/nestjs-blog-main
             git fetch --all
-            git reset --hard origin/main
+            git reset --hard origin/master
             echo "${{secrets.ENV_PRODUCTION}}" > .env
             npm i --force
             npm run migration:generate
