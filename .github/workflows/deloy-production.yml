@@ -40,4 +40,4 @@ jobs:
             npm i --force
             npm run migration:generate
             npm run build
-            npm run start:prod
+            pm2 start
