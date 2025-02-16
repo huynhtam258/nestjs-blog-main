@@ -40,4 +40,4 @@ jobs:
             npm i --force
             npm run migration:generate
             npm run build
-            pm2 start
+            pm2 start ecosystem.config.js --env 
